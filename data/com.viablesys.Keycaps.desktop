@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Keycaps
+Comment=On-screen legends for a blank keyboard
+Exec=/home/bpd/.local/bin/keycaps
+Icon=input-keyboard
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=keyboard;keycap;legend;layout;fn;function;brightness;volume;
+NoDisplay=false
+# Must match WindowOptions.app_id so the shell associates the Wayland surface
+# with this entry.
+StartupWMClass=com.viablesys.Keycaps

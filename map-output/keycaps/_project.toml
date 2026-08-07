@@ -1,0 +1,21 @@
+[project]
+name = "keycaps"
+git_hash = "unknown"
+scanned_at = 1786068003
+module_count = 2
+total_lines = 334
+
+[modules.layout]
+path = "src/layout.rs"
+lines = 141
+deps = []
+pub_items = [
+    "framework13",
+    "Key",
+]
+
+[modules.main]
+path = "src/main.rs"
+lines = 193
+deps = ["layout"]
+pub_items = []

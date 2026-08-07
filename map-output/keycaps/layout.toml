@@ -1,0 +1,23 @@
+[module]
+name = "layout"
+path = "src/layout.rs"
+lines = 141
+
+[coordination]
+deps = []
+
+[control]
+lines = 141
+dep_count = 0
+
+[policy]
+pub_fns = ["framework13"]
+pub_types = ["Key"]
+
+[[items]]
+name = "framework13"
+kind = "function"
+
+[[items]]
+name = "Key"
+kind = "type"

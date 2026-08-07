@@ -1,0 +1,17 @@
+items = []
+
+[module]
+name = "main"
+path = "src/main.rs"
+lines = 193
+
+[coordination]
+deps = ["layout"]
+
+[control]
+lines = 193
+dep_count = 1
+
+[policy]
+pub_fns = []
+pub_types = []

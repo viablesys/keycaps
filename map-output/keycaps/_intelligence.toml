@@ -1,0 +1,31 @@
+[graph]
+total_modules = 2
+total_edges = 1
+foundation = ["layout"]
+leaf = ["main"]
+
+[ranking]
+by_in_degree = [
+    "layout",
+    "main",
+]
+by_lines = [
+    "main",
+    "layout",
+]
+by_api_surface = [
+    "layout",
+    "main",
+]
+
+[modules.layout]
+in_degree = 1
+out_degree = 0
+role = "foundation"
+lines_per_pub_item = 70
+
+[modules.main]
+in_degree = 0
+out_degree = 1
+role = "leaf"
+lines_per_pub_item = 193
