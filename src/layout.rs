@@ -27,7 +27,7 @@ pub struct Key {
     /// above and this below. Only the arrow cluster needs it: ↑ and ↓ split a
     /// single 1u slot, which is why a keyboard drawn on an integer grid can
     /// never be quite right.
-    pub stack: Option<(&'static str, u16)>,
+    pub stack: Option<Box<Key>>,
     /// evdev code of the primary legend. `None` for Fn, which the embedded
     /// controller never reports.
     pub code: Option<u16>,
@@ -63,9 +63,10 @@ fn k(main: &'static str, code: u16) -> Key {
     Key { main, shift: None, fn_legend: None, width: 1.0, stack: None, code: Some(code), fn_code: None }
 }
 
-/// Two half-height caps in one 1u column — the ↑/↓ pair.
-fn kstack(top: &'static str, top_code: u16, bottom: &'static str, bottom_code: u16) -> Key {
-    Key { stack: Some((bottom, bottom_code)), ..k(top, top_code) }
+/// Two half-height caps in one 1u column — the ↑/↓ pair. `top` is drawn
+/// above, `bottom` below; each is a full key with its own legends and codes.
+fn kstack(top: Key, bottom: Key) -> Key {
+    Key { stack: Some(Box::new(bottom)), ..top }
 }
 
 /// evdev codes (linux/input-event-codes.h) for every key on this board.
@@ -97,10 +98,14 @@ pub mod code {
     pub const RIGHTCTRL: u16 = 97;
     pub const SYSRQ: u16 = 99;
     pub const RIGHTALT: u16 = 100;
+    pub const HOME: u16 = 102;
     pub const UP: u16 = 103;
+    pub const PAGEUP: u16 = 104;
     pub const LEFT: u16 = 105;
     pub const RIGHT: u16 = 106;
+    pub const END: u16 = 107;
     pub const DOWN: u16 = 108;
+    pub const PAGEDOWN: u16 = 109;
     pub const INSERT: u16 = 110;
     pub const DELETE: u16 = 111;
     pub const MUTE: u16 = 113;
@@ -216,9 +221,10 @@ pub fn framework13() -> Vec<Vec<Key>> {
             k("", SPACE).wide(5.25).fn_("Backlight", None),
             k("Alt", RIGHTALT),
             k("Ctrl", RIGHTCTRL),
-            k("←", LEFT),
-            kstack("↑", UP, "↓", DOWN),
-            k("→", RIGHT),
+            // Fn+arrows captured from evdev 2026-10-31, same as the F-row.
+            k("←", LEFT).fn_("Home", Some(HOME)),
+            kstack(k("↑", UP).fn_("PgUp", Some(PAGEUP)), k("↓", DOWN).fn_("PgDn", Some(PAGEDOWN))),
+            k("→", RIGHT).fn_("End", Some(END)),
         ],
     ]
 }
@@ -239,7 +245,7 @@ mod tests {
     fn codes_are_unique() {
         let mut seen = std::collections::HashSet::new();
         for key in framework13().iter().flatten() {
-            for c in key.codes().chain(key.stack.map(|s| s.1)) {
+            for c in key.codes().chain(key.stack.iter().flat_map(|s| s.codes())) {
                 assert!(seen.insert(c), "code {c} on {} is duplicated", key.main);
             }
         }

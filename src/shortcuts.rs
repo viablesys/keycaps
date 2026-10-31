@@ -205,6 +205,10 @@ fn keysym_code(keysym: &str) -> Option<u16> {
         "backspace" => BACKSPACE,
         "delete" => DELETE,
         "insert" => INSERT,
+        "home" => HOME,
+        "end" => END,
+        "page_up" | "prior" => PAGEUP,
+        "page_down" | "next" => PAGEDOWN,
         "left" => LEFT,
         "right" => RIGHT,
         "up" => UP,
@@ -270,7 +274,8 @@ mod tests {
         assert_eq!(parse_accel("<Primary><Alt>F10"), Some((Mods::CTRL.with(Mods::ALT), code::F1 + 9)));
         assert_eq!(parse_accel("<Super>XF86MonBrightnessUp"), Some((Mods::SUPER, code::BRIGHTNESSUP)));
         assert_eq!(parse_accel("Print"), Some((Mods::NONE, code::SYSRQ)));
-        assert_eq!(parse_accel("<Super>Page_Down"), None, "no such key on this board");
+        assert_eq!(parse_accel("<Super>Page_Down"), Some((Mods::SUPER, code::PAGEDOWN)), "Fn+↓");
+        assert_eq!(parse_accel("<Super>KP_Next"), None, "no keypad on this board");
         assert_eq!(parse_accel("<Hyper>a"), None);
         assert_eq!(parse_accel(""), None);
     }

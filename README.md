@@ -38,7 +38,9 @@ Override the device list with `KEYCAPS_DEVICES` — comma-separated device
 names as in `/proc/bus/input/devices`, or absolute paths. A path to a FIFO is
 how the layers were tested without touching the real keyboard.
 
-Two things the hardware dictates: **Fn never lights** (the EC never reports
+Fn+arrows send Home/End/PgUp/PgDn (captured from evdev, like the F-row),
+so the arrow keys carry those as Fn legends and their Super layers show the
+workspace shortcuts. Two things the hardware dictates: **Fn never lights** (the EC never reports
 it), and **Fn+F9 lights Super and P**, because that is literally what the EC
 sends for "Display".
 

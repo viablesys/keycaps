@@ -163,38 +163,23 @@ fn text(s: &str, size: f32, color: u32) -> Div {
 }
 
 /// One keycap. Legend order top-to-bottom mirrors how they're physically
-/// printed: shifted above, primary in the middle, Fn below.
-fn key(k: &Key, view: &View) -> AnyElement {
-    let is_pressed = k.codes().any(|c| view.pressed.contains(&c));
-
-    // A stacked pair is two independent caps sharing one column, not one cap
-    // with two legends — so it returns early rather than falling through to
-    // the legend-tier logic below.
-    if let Some((bottom, bottom_code)) = k.stack {
-        let half = (KEY_H - GAP) / 2.0;
-        let half_cap = |glyph: &'static str, code: u16| {
-            let pressed = view.pressed.contains(&code);
-            let cap = cap(k.width * UNIT, half, pressed);
-            match (view.mods == Mods::NONE, view.label(Some(code))) {
-                (false, Some(label)) => cap.child(text(label, 11.0, MAIN_FG)),
-                (false, None) => cap.child(text(glyph, 16.0, DIM_FG)),
-                (true, _) => cap.child(text(glyph, 18.0, MAIN_FG)),
-            }
-        };
-        return div()
-            .w(px(k.width * UNIT))
-            .h(px(KEY_H))
-            .flex()
-            .flex_col()
-            .gap(px(GAP))
-            .child(half_cap(k.main, k.code.expect("stacked keys have codes")))
-            .child(half_cap(bottom, bottom_code))
-            .into_any_element();
-    }
-
+/// printed: shifted above, primary in the middle, Fn below. `compact` is a
+/// half-height cap, which only has room for the main and Fn tiers.
+fn keycap(k: &Key, view: &View, height: f32, compact: bool) -> Div {
+    let pressed = k.codes().any(|c| view.pressed.contains(&c));
     let l = legends(k, view);
     let fg = |color| if l.idle { DIM_FG } else { color };
-    let mut cap = cap(k.width * UNIT, KEY_H, is_pressed).gap(px(1.0));
+    let mut cap = cap(k.width * UNIT, height, pressed).gap(px(if compact { 0.0 } else { 1.0 }));
+    if compact {
+        // No room for the key name above an action, so an idle key keeps it.
+        if let Some(main) = l.main.or(l.top) {
+            cap = cap.child(text(main, if l.action { 11.0 } else { 16.0 }, fg(MAIN_FG)));
+        }
+        if let Some(bottom) = l.bottom {
+            cap = cap.child(text(bottom, 10.0, fg(FN_FG)));
+        }
+        return cap;
+    }
     if let Some(top) = l.top {
         cap = cap.child(text(top, if l.action { 12.0 } else { 15.0 }, fg(SHIFT_FG)));
     }
@@ -204,7 +189,25 @@ fn key(k: &Key, view: &View) -> AnyElement {
     if let Some(bottom) = l.bottom {
         cap = cap.child(text(bottom, 12.0, fg(FN_FG)));
     }
-    cap.into_any_element()
+    cap
+}
+
+/// A stacked pair is two independent caps sharing one column, not one cap
+/// with two legends.
+fn key(k: &Key, view: &View) -> AnyElement {
+    let Some(bottom) = &k.stack else {
+        return keycap(k, view, KEY_H, false).into_any_element();
+    };
+    let half = (KEY_H - GAP) / 2.0;
+    div()
+        .w(px(k.width * UNIT))
+        .h(px(KEY_H))
+        .flex()
+        .flex_col()
+        .gap(px(GAP))
+        .child(keycap(k, view, half, true))
+        .child(keycap(bottom, view, half, true))
+        .into_any_element()
 }
 
 impl Render for Keyboard {
