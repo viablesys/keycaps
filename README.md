@@ -8,6 +8,16 @@
 > legends are this laptop's, captured from its own evdev output. Use it as a
 > working starting point for yours.
 
+**At rest** — every legend at once: shifted above, Fn secondaries in blue.
+
+![keycaps at rest](docs/at-rest.png)
+
+**Super held** — the key lights, and every legend switches to GNOME's Super
+shortcuts. F7/F8 show the custom Studio Display brightness shortcuts; keys
+with no Super shortcut fade.
+
+![keycaps with Super held](docs/super-held.png)
+
 An on-screen reference for a keyboard with blank keycaps — specifically a
 Framework Laptop 13 (AMD Ryzen AI 300 Series), US ANSI.
 
