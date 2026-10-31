@@ -1,5 +1,13 @@
 # keycaps
 
+> **Vibe coded, and it works.** Built with an AI coding agent to meet one
+> specific need: a Framework Laptop 13 with blank keycaps, plus an Apple
+> Studio Display whose brightness is driven by
+> [asdbctl](https://github.com/juliuszint/asdbctl). It's in daily use on that
+> machine. It is not a general-purpose app: the layout, device names and Fn
+> legends are this laptop's, captured from its own evdev output. Use it as a
+> working starting point for yours.
+
 An on-screen reference for a keyboard with blank keycaps — specifically a
 Framework Laptop 13 (AMD Ryzen AI 300 Series), US ANSI.
 
