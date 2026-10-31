@@ -274,7 +274,9 @@ fn main() {
             WindowOptions {
                 window_bounds: Some(WindowBounds::Windowed(bounds)),
                 titlebar: Some(TitlebarOptions {
-                    title: Some("Keycaps — Framework 13".into()),
+                    // ASCII only: gpui 0.2.2 writes the X11 title as Latin-1 WM_NAME, so a
+                    // UTF-8 em dash shows up as mojibake under XWayland.
+                    title: Some("Keycaps - Framework 13".into()),
                     ..Default::default()
                 }),
                 // Wayland matches this against the .desktop file's StartupWMClass.
