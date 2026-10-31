@@ -1,0 +1,8 @@
+# keycaps: let the logged-in desktop user read (not grab) the Framework 13's
+# keyboard event devices, so keys can light up system-wide.
+# Any program in that session can then read keystrokes, as with an X11 session.
+# Must sort before 73-seat-late.rules, which applies uaccess.
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="Video Bus", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="FRMW0004:00 32AC:0006 Consumer Control", TAG+="uaccess"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="FRMW0004:00 32AC:0006 Wireless Radio Control", TAG+="uaccess"

@@ -1,0 +1,85 @@
+# Short keycap legends for GNOME action ids (gsettings key names, "-static" dropped).
+# Format: id<TAB>label. "#" stands for a trailing number: switch-to-application-# -> "App 3".
+# Ids not listed here fall back to the id itself, made readable.
+activate-window-menu	Window menu
+begin-move	Move window
+begin-resize	Resize window
+cancel-input-capture	Release input
+close	Close window
+cycle-group	Cycle app windows
+cycle-group-backward	Cycle app windows ←
+cycle-panels	Cycle panels
+cycle-panels-backward	Cycle panels ←
+cycle-windows	Cycle windows
+cycle-windows-backward	Cycle windows ←
+focus-active-notification	Notification
+help	Help
+logout	Log out
+magnifier	Magnifier
+magnifier-zoom-in	Zoom in
+magnifier-zoom-out	Zoom out
+maximize	Maximize
+minimize	Minimize
+media	Media
+mic-mute	Mic mute
+move-to-monitor-down	To monitor ↓
+move-to-monitor-left	To monitor ←
+move-to-monitor-right	To monitor →
+move-to-monitor-up	To monitor ↑
+move-to-workspace-#	To workspace #
+move-to-workspace-down	To workspace ↓
+move-to-workspace-last	To last workspace
+move-to-workspace-left	To workspace ←
+move-to-workspace-right	To workspace →
+move-to-workspace-up	To workspace ↑
+next	Next
+open-new-window-application-#	New window app #
+panel-run-dialog	Run command
+play	Play
+previous	Prev
+restore-shortcuts	Restore shortcuts
+rfkill	Airplane
+rotate-video-lock	Rotation lock
+screen-brightness-down	Bright −
+screen-brightness-down-monitor	Monitor bright −
+screen-brightness-up	Bright +
+screen-brightness-up-monitor	Monitor bright +
+screensaver	Lock
+screenshot	Screenshot
+screenshot-window	Window shot
+shift-overview-down	Overview ↓
+shift-overview-up	Overview ↑
+show-screen-recording-ui	Screen record
+show-screenshot-ui	Screenshot UI
+switch-applications	Switch apps
+switch-applications-backward	Switch apps ←
+switch-group	Switch windows
+switch-group-backward	Switch windows ←
+switch-input-source	Input source
+switch-input-source-backward	Input source ←
+switch-monitor	Display mode
+switch-panels	Switch panels
+switch-panels-backward	Switch panels ←
+switch-to-application-#	App #
+switch-to-session-#	TTY #
+switch-to-workspace-#	Workspace #
+switch-to-workspace-down	Workspace ↓
+switch-to-workspace-last	Last workspace
+switch-to-workspace-left	Workspace ←
+switch-to-workspace-right	Workspace →
+switch-to-workspace-up	Workspace ↑
+toggle-application-view	App grid
+toggle-maximized	Toggle maximize
+toggle-message-tray	Notifications
+toggle-quick-settings	Quick settings
+toggle-tiled-left	Tile left
+toggle-tiled-right	Tile right
+unmaximize	Restore size
+volume-down	Vol −
+volume-down-precise	Vol − fine
+volume-down-quiet	Vol − quiet
+volume-mute	Mute
+volume-mute-quiet	Mute quiet
+volume-up	Vol +
+volume-up-precise	Vol + fine
+volume-up-quiet	Vol + quiet

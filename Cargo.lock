@@ -2826,6 +2826,7 @@ dependencies = [
 name = "keycaps"
 version = "0.1.0"
 dependencies = [
+ "futures",
  "gpui",
 ]
 

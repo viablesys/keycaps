@@ -3,9 +3,55 @@
 An on-screen reference for a keyboard with blank keycaps — specifically a
 Framework Laptop 13 (AMD Ryzen AI 300 Series), US ANSI.
 
-Every legend renders at once: shifted symbols above the primary, Fn
-secondaries below in blue. There are no modes and no toggles, because this is
-something you read, not something you operate.
+At rest every legend renders at once: shifted symbols above the primary, Fn
+secondaries below in blue. There are still no toggles — it changes only in
+response to the keyboard:
+
+- **Keys light up as you press them**, anywhere on the system, modifiers
+  included. Close with Ctrl+Q (Escape no longer closes it: you may press it
+  just to watch it light).
+- **Holding modifiers switches the legends** to GNOME's global shortcuts for
+  exactly that combination — Super shows Lock on L and App 1–9 on the digits,
+  Ctrl+Alt shows the TTYs on the F-row. Keys with no global shortcut fade.
+  Shift alone shows the shifted symbols as the main legend. App shortcuts
+  (Ctrl+W…) are never shown: they differ per app, so one legend would lie.
+
+## Key detection
+
+Wayland only gives key events to the focused window, so keycaps reads the
+keyboard's evdev devices directly — read-only, never grabbed, nothing logged.
+A Framework 13 spreads its keys over four devices (letters and F-row on the
+i8042 keyboard; brightness on the ACPI Video Bus and the EC's Consumer
+Control; airplane mode on Wireless Radio Control). Grant your desktop session
+read access to just those four:
+
+```
+sudo install -m644 data/70-keycaps.rules /etc/udev/rules.d/
+sudo udevadm control --reload && sudo udevadm trigger --subsystem-match=input --action=change
+```
+
+The trade-off: any program in your session can then read keystrokes from
+those devices, much as under X11. Without the rule the app still runs as a
+static reference and says why detection is off along the bottom edge.
+
+Override the device list with `KEYCAPS_DEVICES` — comma-separated device
+names as in `/proc/bus/input/devices`, or absolute paths. A path to a FIFO is
+how the layers were tested without touching the real keyboard.
+
+Two things the hardware dictates: **Fn never lights** (the EC never reports
+it), and **Fn+F9 lights Super and P**, because that is literally what the EC
+sends for "Display".
+
+## Shortcut layers
+
+Read once at startup from gsettings: `org.gnome.shell.keybindings`,
+`org.gnome.desktop.wm.keybindings`, both mutter schemas, media-keys, and your
+custom shortcuts (which take precedence and use their own names — keep them
+short, a keycap fits about three short lines). Restart to pick up changes.
+
+`keycaps --shortcuts` prints every binding it found as `mods code label` —
+the first place to look when a key shows blank. Legends for GNOME's action ids
+live in `data/labels.tsv`; unlisted ids fall back to the id made readable.
 
 Also a **GPUI pilot** — a first look at building Linux desktop apps in Rust
 with Zed's UI framework.
@@ -31,7 +77,8 @@ What's worth copying from this as a template:
 
 **The model has no framework types in it.** `src/layout.rs` is `Vec<Vec<Key>>`
 and knows nothing about GPUI. `src/main.rs` is a pure function from that data
-to elements. Swapping renderers wouldn't touch the model.
+plus the held keys to elements. Key events arrive from reader threads over a
+`futures` channel drained by a `cx.spawn` task. Swapping renderers wouldn't touch the model.
 
 **Layout is Tailwind-shaped.** `div().flex().flex_col().gap(px(6.)).items_center()`
 — the style helpers are macro-generated in `gpui_macros::style_helpers!()`, which
